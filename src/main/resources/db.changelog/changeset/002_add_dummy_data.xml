@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="1" author="ahmed">
+        <insert tableName="admin">
+            <column name="username" value="ahmed"/>
+            <column name="password" value="1234"/>
+        </insert>
+        <rollback>
+            DELETE FROM admin WHERE username = 'ahmed';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="remove_unique_constraint_from_user_name" author="ahmed">
+        <dropUniqueConstraint
+                tableName="user"
+                constraintName="uk_user_email"/>
+    </changeSet>
+
+    <changeSet id="add_email_to_user" author="ahmed">
+        <addColumn tableName="user">
+            <column name="email" type="varchar">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_user_email" />
+            </column>
+        </addColumn>
+        <rollback>
+            <dropColumn tableName="user" columnName="email"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert_to_user" author="ahmed">
+        <insert tableName="user">
+            <column name="id" value="3f6a76e3-1d27-451c-98a1-b195e2102a03"/>
+            <column name="name" value="ahmed"/>
+            <column name="email" value="ahmed@gmail.com"/>
+            <column name="password" value="1234"/>
+            <column name="phone_number" value="01088694563"/>
+        </insert>
+        <rollback>
+            DELETE FROM user WHERE email = 'ahmed@gmail.com';
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="insert_to_appointment" author="ahmed">
+        <insert tableName="appointment">
+            <column name="user_id" value="3f6a76e3-1d27-451c-98a1-b195e2102a03"/>
+            <column name="appointment_date" valueDate="2024-11-27T10:00:00"/>
+            <column name="service" value="auditing"/>
+        </insert>
+        <rollback>
+            DELETE FROM appointment WHERE user_id = '3f6a76e3-1d27-451c-98a1-b195e2102a03';
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
