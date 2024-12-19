@@ -87,6 +87,7 @@
         </createTable>
 
 <!--        you can add sql and addDefaultValue in same changeset-->
+
         <sql>
             ALTER TABLE "appointment" ALTER COLUMN id SET DEFAULT uuid_generate_v4();
         </sql>

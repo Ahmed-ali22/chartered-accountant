@@ -16,6 +16,8 @@ import java.util.UUID;
 @Table(name = "appointment")
 public class Appointment {
     @Id
+    @GeneratedValue( strategy = GenerationType.UUID )
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne
@@ -27,7 +29,7 @@ public class Appointment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusEnum status;
+    private StatusEnum status = StatusEnum.SCHEDULED;
 
     @Column(nullable = false)
     private String service;
