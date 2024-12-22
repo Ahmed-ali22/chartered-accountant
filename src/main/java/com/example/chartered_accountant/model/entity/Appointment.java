@@ -29,7 +29,7 @@ public class Appointment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusEnum status = StatusEnum.SCHEDULED;
+    private StatusEnum status = StatusEnum.scheduled;
 
     @Column(nullable = false)
     private String service;

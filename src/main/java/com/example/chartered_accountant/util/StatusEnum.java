@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public enum StatusEnum {
-    SCHEDULED,
-    COMPLETED,
-    CANCELLED
+    scheduled,
+    completed,
+    cancelled
 }
