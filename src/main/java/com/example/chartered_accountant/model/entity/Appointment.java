@@ -1,8 +1,9 @@
 package com.example.chartered_accountant.model.entity;
 
-import com.example.chartered_accountant.util.StatusEnum;
+import com.example.chartered_accountant.util.status_enum.StatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "appointment")
 public class Appointment {
@@ -29,7 +31,7 @@ public class Appointment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusEnum status = StatusEnum.SCHEDULED;
+    private StatusEnum status = StatusEnum.scheduled;
 
     @Column(nullable = false)
     private String service;

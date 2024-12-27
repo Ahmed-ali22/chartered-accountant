@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 @Data
 @Builder
 public class UserDto {
@@ -29,6 +28,4 @@ public class UserDto {
     private String companyName;
     private String description;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
