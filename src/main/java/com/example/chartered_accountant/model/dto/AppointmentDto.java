@@ -1,6 +1,6 @@
 package com.example.chartered_accountant.model.dto;
 
-import com.example.chartered_accountant.util.StatusEnum;
+import com.example.chartered_accountant.util.status_enum.StatusEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
