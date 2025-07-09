@@ -1,6 +1,5 @@
 package com.example.chartered_accountant.model.entity;
 
-import com.example.chartered_accountant.util.status_enum.StatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +15,10 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "appointment")
-public class Appointment {
+public class Appointment extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.UUID )
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column( updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne
@@ -29,9 +28,8 @@ public class Appointment {
     @Column(name = "appointment_date", nullable = false)
     private LocalDateTime dateTime;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusEnum status = StatusEnum.scheduled;
+    private String status = "scheduled";
 
     @Column(nullable = false)
     private String service;

@@ -1,6 +1,7 @@
 package com.example.chartered_accountant.util.mapper;
 
-import com.example.chartered_accountant.model.dto.UserDto;
+import com.example.chartered_accountant.model.dto.user.UserDto;
+import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class UserMapper {
                 .name(userDto.getName())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
-                .phone(userDto.getPhone())
+                .phoneNumber(userDto.getPhoneNumber())
                 .companyName(Optional.ofNullable(userDto.getCompanyName()).orElse(""))
                 .description(Optional.ofNullable(userDto.getDescription()).orElse(""))
                 .build();
@@ -25,9 +26,19 @@ public class UserMapper {
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .phone(user.getPhone())
+                .phoneNumber(user.getPhoneNumber())
                 .companyName(Optional.ofNullable(user.getCompanyName()).orElse(""))
                 .description(Optional.ofNullable(user.getDescription()).orElse(""))
                 .build();
     }
+
+    public static User updateEntityFromDto(UserUpdateDto userDto , User entity) {
+        entity.setName(userDto.getName());
+        entity.setPassword(userDto.getPassword());
+        entity.setPhoneNumber(userDto.getPhoneNumber());
+        entity.setCompanyName(userDto.getCompanyName());
+        entity.setDescription(userDto.getDescription());
+        return entity;
+    }
+
 }

@@ -1,15 +1,16 @@
 package com.example.chartered_accountant.util.mapper;
 
-import com.example.chartered_accountant.model.dto.AppointmentDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentDto;
 import com.example.chartered_accountant.model.entity.Appointment;
+import com.example.chartered_accountant.model.entity.User;
 
 public class AppointmentMapper {
 
     private AppointmentMapper() {}
 
-    public static Appointment toEntity(AppointmentDto appointmentDto) {
+    public static Appointment toEntity(AppointmentDto appointmentDto , User user) {
         return Appointment.builder()
-                .user(UserMapper.toEntity(appointmentDto.getUserDto()))
+                .user(user)
                 .dateTime(appointmentDto.getDateTime())
                 .status(appointmentDto.getStatus())
                 .service(appointmentDto.getService())
@@ -18,7 +19,7 @@ public class AppointmentMapper {
 
     public static AppointmentDto toDto(Appointment appointment) {
         return AppointmentDto.builder()
-                .userDto(UserMapper.toDto(appointment.getUser()))
+                .userEmail(appointment.getUser().getEmail())
                 .dateTime(appointment.getDateTime())
                 .status(appointment.getStatus())
                 .service(appointment.getService())

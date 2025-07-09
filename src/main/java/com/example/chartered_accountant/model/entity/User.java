@@ -15,11 +15,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user")
-public class User {
+// set name of user table in another quotes' bec. it reserved word in postgresql //
+@Table(name = "\"user\"")
+public class User extends BaseEntity{
     @Id
     @GeneratedValue( strategy = GenerationType.UUID )
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column( name = "id",updatable = false, nullable = false)
     private UUID id;
 
     @Column(nullable = false)
@@ -32,7 +33,7 @@ public class User {
     private String password;
 
     @Column(name = "phone_number" , nullable = false)
-    private String phone;
+    private String phoneNumber;
 
     @Column(name = "company_name")
     private String companyName;

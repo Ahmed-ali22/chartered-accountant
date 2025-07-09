@@ -1,6 +1,5 @@
-package com.example.chartered_accountant.model.dto;
+package com.example.chartered_accountant.model.dto.appointment;
 
-import com.example.chartered_accountant.util.status_enum.StatusEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -11,17 +10,14 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class AppointmentDto {
-    @NotNull(message = "user data is required")
-    private UserDto userDto;
+public class AppointmentUpdateDto {
+    @NotNull(message = "user Email is required")
+    private String userEmail;
 
-    @NotNull(message = "date and time are required")
     private LocalDateTime dateTime;
 
-    @NotNull(message = "status is required")
     @Pattern(regexp = "scheduled|completed|cancelled", message = "Status must be one of scheduled, completed, or cancelled")
-    private StatusEnum status;
+    private String status;
 
-    @NotBlank(message = "Type of service is required")
     private String service;
 }
