@@ -1,6 +1,7 @@
 package com.example.chartered_accountant.util.mapper;
 
 import com.example.chartered_accountant.model.dto.appointment.AppointmentDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentUpdateDto;
 import com.example.chartered_accountant.model.entity.Appointment;
 import com.example.chartered_accountant.model.entity.User;
 
@@ -24,5 +25,12 @@ public class AppointmentMapper {
                 .status(appointment.getStatus())
                 .service(appointment.getService())
                 .build();
+    }
+
+    public static Appointment updateEntityFromDto(AppointmentUpdateDto appointmentUpdateDto , Appointment appointment ) {
+        appointment.setDateTime(appointmentUpdateDto.getDateTime());
+        appointment.setStatus(appointmentUpdateDto.getStatus());
+        appointment.setService(appointmentUpdateDto.getService());
+        return appointment;
     }
 }

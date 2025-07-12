@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Slf4j
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -37,7 +40,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void update(AppointmentUpdateDto appointmentUpdateDto) {
+    public void update(AppointmentUpdateDto appointmentUpdateDto, UUID id) {
+        Appointment appointment = appointmentRepo.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("Appointment  Not Found"));
+        appointmentRepo.save(AppointmentMapper.updateEntityFromDto(appointmentUpdateDto,appointment));
+        log.info("Appointment of User Email : {} successfully Updated  ", appointmentUpdateDto.getUserEmail());
+    }
 
+    @Override
+    public List<Appointment> findByUserEmail(String userEmail) {
+        return List.of();
+    }
+
+    @Override
+    public List<Appointment> findAll() {
+        return List.of();
     }
 }

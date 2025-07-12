@@ -39,8 +39,7 @@ public class UserServiceImpl implements UserService{
     public void update(UserUpdateDto userDto) {
         User user = userRepo.findByEmail(userDto.getEmail())
                 .orElseThrow(()-> new IllegalArgumentException("User Not Found"));
-        User updatedUser = UserMapper.updateEntityFromDto(userDto,user);
-        userRepo.save(updatedUser);
+        userRepo.save(UserMapper.updateEntityFromDto(userDto,user));
         log.info("User Email : {} successfully Updated  ", userDto.getEmail());
     }
 

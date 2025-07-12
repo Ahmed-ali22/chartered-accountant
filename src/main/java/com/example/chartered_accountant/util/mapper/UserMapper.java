@@ -32,13 +32,13 @@ public class UserMapper {
                 .build();
     }
 
-    public static User updateEntityFromDto(UserUpdateDto userDto , User entity) {
-        entity.setName(userDto.getName());
-        entity.setPassword(userDto.getPassword());
-        entity.setPhoneNumber(userDto.getPhoneNumber());
-        entity.setCompanyName(userDto.getCompanyName());
-        entity.setDescription(userDto.getDescription());
-        return entity;
+    public static User updateEntityFromDto(UserUpdateDto userDto , User user) {
+        user.setName(userDto.getName());
+        user.setPassword(userDto.getPassword());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setCompanyName(userDto.getCompanyName());
+        user.setDescription(userDto.getDescription());
+        return user;
     }
 
 }
