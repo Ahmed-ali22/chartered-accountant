@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto  findByEmail(String email) {
+    public UserDto findByEmail(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(()->new IllegalArgumentException ("User not found"));
         log.info("User successfully Found  ");

@@ -42,18 +42,24 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void update(AppointmentUpdateDto appointmentUpdateDto, UUID id) {
         Appointment appointment = appointmentRepo.findById(id)
-                .orElseThrow(()-> new IllegalArgumentException("Appointment  Not Found"));
-        appointmentRepo.save(AppointmentMapper.updateEntityFromDto(appointmentUpdateDto,appointment));
+                .orElseThrow(() -> new IllegalArgumentException("Appointment  Not Found"));
         log.info("Appointment of User Email : {} successfully Updated  ", appointmentUpdateDto.getUserEmail());
+        appointmentRepo.save(AppointmentMapper.updateEntityFromDto(appointmentUpdateDto, appointment));
+    }
+
+
+    @Override
+    public List<AppointmentDto> findByUserEmail(String userEmail) {
+        List<Appointment> appointments = appointmentRepo.findByUserEmail(userEmail);
+        if(appointments.isEmpty()) {
+            throw new IllegalArgumentException("No Appointments added yet");
+        }
+        log.info("Appointment of User Email : {} successfully found  ", userEmail);
+        return appointments.stream().map(AppointmentMapper :: toDto).toList();
     }
 
     @Override
-    public List<Appointment> findByUserEmail(String userEmail) {
-        return List.of();
-    }
-
-    @Override
-    public List<Appointment> findAll() {
+    public List<AppointmentDto> findAll() {
         return List.of();
     }
 }
