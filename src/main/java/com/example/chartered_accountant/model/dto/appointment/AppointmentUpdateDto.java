@@ -11,9 +11,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class AppointmentUpdateDto {
-    @NotNull(message = "user Email is required")
-    private String userEmail;
-
     private LocalDateTime dateTime;
 
     @Pattern(regexp = "scheduled|completed|cancelled", message = "Status must be one of scheduled, completed, or cancelled")

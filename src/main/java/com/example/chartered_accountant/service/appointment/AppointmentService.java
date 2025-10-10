@@ -1,17 +1,18 @@
 package com.example.chartered_accountant.service.appointment;
 
-import com.example.chartered_accountant.model.dto.appointment.AppointmentDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentSaveDto;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentUpdateDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentService {
-    void save (AppointmentDto appointmentDto);
+    void save (AppointmentSaveDto appointmentSaveDto);
 
-    void update(AppointmentUpdateDto appointmentUpdateDto , UUID id);
+    AppointmentResponseDto update(AppointmentUpdateDto appointmentUpdateDto , UUID id);
 
-    List<AppointmentDto> findByUserEmail(String userEmail);
+    List<AppointmentSaveDto> findByUserEmail(String userEmail);
 
-    List<AppointmentDto> findAll();
+    List<AppointmentSaveDto> findAll();
 }

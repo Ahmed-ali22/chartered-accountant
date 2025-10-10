@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class AppointmentDto {
+public class AppointmentSaveDto {
     @NotBlank(message = "user Email is required")
     private String userEmail;
 

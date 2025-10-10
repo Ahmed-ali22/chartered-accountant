@@ -1,8 +1,10 @@
 package com.example.chartered_accountant.controller;
 
-import com.example.chartered_accountant.model.dto.appointment.AppointmentDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentSaveDto;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentUpdateDto;
 import com.example.chartered_accountant.service.appointment.AppointmentService;
+import com.example.chartered_accountant.util.mapper.AppointmentMapper;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +28,13 @@ public class AppointmentController {
         log.info("Appointment Service Injected");
     }
     @PostMapping("save")
-    public ResponseEntity<String> createAppointment(@Valid  @RequestBody AppointmentDto appointmentDto) {
-        appointmentService.save(appointmentDto);
+    public ResponseEntity<String> createAppointment(@Valid  @RequestBody AppointmentSaveDto appointmentSaveDto) {
+        appointmentService.save(appointmentSaveDto);
         return ResponseEntity.ok("New Appointment Created");
     }
 
     @PutMapping("updateById/{id}")
-    public ResponseEntity<String> updateAppointment(@PathVariable UUID id , @RequestBody AppointmentUpdateDto appointmentUpdateDto) {
-        appointmentService.update(appointmentUpdateDto,id);
-        return ResponseEntity.ok("Appointment Updated ");
+    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable UUID id , @RequestBody AppointmentUpdateDto appointmentUpdateDto) {
+        return ResponseEntity.ok(appointmentService.update(appointmentUpdateDto,id));
     }
 }
