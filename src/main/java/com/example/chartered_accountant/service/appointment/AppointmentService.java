@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentService {
-    void save (AppointmentSaveDto appointmentSaveDto);
+    AppointmentResponseDto save (AppointmentSaveDto appointmentSaveDto);
 
     AppointmentResponseDto update(AppointmentUpdateDto appointmentUpdateDto , UUID id);
 
-    List<AppointmentSaveDto> findByUserEmail(String userEmail);
+    List<AppointmentResponseDto> findByUserEmail(String userEmail);
 
-    List<AppointmentSaveDto> findAll();
+    List<AppointmentResponseDto> findAll();
 }

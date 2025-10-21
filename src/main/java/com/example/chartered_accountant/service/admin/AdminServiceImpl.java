@@ -1,4 +1,4 @@
-package com.example.chartered_accountant.service.Admin;
+package com.example.chartered_accountant.service.admin;
 
 import com.example.chartered_accountant.model.dto.AdminDto;
 import com.example.chartered_accountant.model.entity.Admin;

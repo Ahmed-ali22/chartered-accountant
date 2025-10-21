@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -28,13 +29,21 @@ public class AppointmentController {
         log.info("Appointment Service Injected");
     }
     @PostMapping("save")
-    public ResponseEntity<String> createAppointment(@Valid  @RequestBody AppointmentSaveDto appointmentSaveDto) {
-        appointmentService.save(appointmentSaveDto);
-        return ResponseEntity.ok("New Appointment Created");
+    public ResponseEntity<AppointmentResponseDto> createAppointment(@Valid  @RequestBody AppointmentSaveDto appointmentSaveDto) {
+        return ResponseEntity.ok(appointmentService.save(appointmentSaveDto));
     }
 
     @PutMapping("updateById/{id}")
-    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable UUID id , @RequestBody AppointmentUpdateDto appointmentUpdateDto) {
+    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable UUID id ,@Valid @RequestBody AppointmentUpdateDto appointmentUpdateDto) {
         return ResponseEntity.ok(appointmentService.update(appointmentUpdateDto,id));
+    }
+
+    @GetMapping("findByUserEmail/{userEmail}")
+    public ResponseEntity<List<AppointmentResponseDto>> findByUserEmail(@PathVariable String userEmail) {
+        return ResponseEntity.ok(appointmentService.findByUserEmail(userEmail));
+    }
+    @GetMapping("findAll")
+    public ResponseEntity<List<AppointmentResponseDto>> findAll() {
+        return ResponseEntity.ok(appointmentService.findAll());
     }
 }

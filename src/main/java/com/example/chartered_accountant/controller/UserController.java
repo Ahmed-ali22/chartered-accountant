@@ -43,7 +43,7 @@ public class UserController {
         userService.deleteAll();
         return   ResponseEntity.ok("ALL Users Deleted Successfully");
     }
-    @GetMapping("find/{email}")
+    @GetMapping("findByEmail/{email}")
     public UserDto findUserByEmail(@PathVariable String email) {
             return userService.findByEmail(email);
     }

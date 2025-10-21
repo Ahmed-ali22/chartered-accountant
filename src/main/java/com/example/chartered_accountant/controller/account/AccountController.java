@@ -3,7 +3,7 @@ package com.example.chartered_accountant.controller.account;
 
 import com.example.chartered_accountant.model.dto.AdminDto;
 import com.example.chartered_accountant.model.dto.user.UserDto;
-import com.example.chartered_accountant.service.Admin.AdminService;
+import com.example.chartered_accountant.service.admin.AdminService;
 import com.example.chartered_accountant.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

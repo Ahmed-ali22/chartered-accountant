@@ -10,7 +10,7 @@ public class AppointmentMapper {
 
     private AppointmentMapper() {}
 
-    public static Appointment SaveToEntity(AppointmentSaveDto appointmentSaveDto, User user) {
+    public static Appointment saveToEntity(AppointmentSaveDto appointmentSaveDto, User user) {
         return Appointment.builder()
                 .user(user)
                 .dateTime(appointmentSaveDto.getDateTime())
@@ -19,7 +19,7 @@ public class AppointmentMapper {
                 .build();
     }
 
-    public static AppointmentSaveDto SaveToDto(Appointment appointment) {
+    public static AppointmentSaveDto saveToDto(Appointment appointment) {
         return AppointmentSaveDto.builder()
                 .userEmail(appointment.getUser().getEmail())
                 .dateTime(appointment.getDateTime())
@@ -35,7 +35,7 @@ public class AppointmentMapper {
         return appointment;
     }
 
-    public static AppointmentResponseDto ResponseToDto (Appointment appointment) {
+    public static AppointmentResponseDto responseToDto (Appointment appointment) {
         return AppointmentResponseDto.builder()
                 .id(appointment.getId())
                 .dateTime(appointment.getDateTime())

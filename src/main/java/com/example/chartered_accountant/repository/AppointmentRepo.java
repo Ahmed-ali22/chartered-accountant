@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface AppointmentRepo extends JpaRepository<Appointment, UUID> {
 
- boolean existsByUserAndDateTime(User user , LocalDateTime dateTime);
+ boolean existsByDateTime(LocalDateTime dateTime);
 
  List<Appointment> findByUserEmail(String userEmail);
 }
