@@ -34,7 +34,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public AppointmentResponseDto save(AppointmentSaveDto appointmentSaveDto) {
         User user = userRepo.findByEmail(appointmentSaveDto.getUserEmail())
-                .orElseThrow(()-> new UserException(404, "userNotFound", "User not found with email: test@example.com"));
+                .orElseThrow(()-> new UserException(
+                        404, "userNotFound", "User not found with email: "+ appointmentSaveDto.getUserEmail()
+                        ));
 
         if (appointmentRepo.existsByDateTime(appointmentSaveDto.getDateTime())) {
             throw new AppointmentException(

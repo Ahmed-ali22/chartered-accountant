@@ -1,5 +1,6 @@
 package com.example.chartered_accountant.service.user;
 
+import com.example.chartered_accountant.error.exception.UserException;
 import com.example.chartered_accountant.model.dto.user.UserDto;
 import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
@@ -27,7 +28,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public void save(UserDto userDto) {
         if(userRepo.existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException(" Email already in use");
+            throw new UserException(
+                    409, "userConflict", "User already exists with email: "+ userDto.getEmail()
+            );
         }
         User user = UserMapper.toEntity(userDto);
         userRepo.save(user);
@@ -38,7 +41,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public void update(UserUpdateDto userDto) {
         User user = userRepo.findByEmail(userDto.getEmail())
-                .orElseThrow(()-> new IllegalArgumentException("User Not Found"));
+                .orElseThrow(()-> new UserException(
+                        404, "userNotFound", "User not found with email: "+ userDto.getEmail()
+                ));
         userRepo.save(UserMapper.updateEntityFromDto(userDto,user));
         log.info("User Email : {} successfully Updated  ", userDto.getEmail());
     }
@@ -46,7 +51,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteByEmail(String email) {
         User user = userRepo.findByEmail(email)
-                .orElseThrow(()-> new IllegalArgumentException("User Not Found"));
+                .orElseThrow(()-> new UserException(
+                        404, "userNotFound", "User not found with email: "+ email
+                ));
         userRepo.delete(user);
         log.info("User Successfully Deleted");
     }
@@ -69,7 +76,9 @@ public class UserServiceImpl implements UserService{
     public List<UserDto> findAll() {
         List<User> userList = userRepo.findAll();
         if(userList.isEmpty()) {
-            throw new IllegalArgumentException ("Users not found");
+            throw new UserException(
+                    404, "noUsersFound", "No users exist in the system"
+            );
         }
         log.info("All Users Successfully Found");
         return  userList.stream().map(UserMapper::toDto).toList();
