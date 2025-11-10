@@ -1,8 +1,8 @@
 package com.example.chartered_accountant.controller;
 
 import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentSaveDto;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentUpdateDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
+import com.example.chartered_accountant.model.entity.Appointment;
 import com.example.chartered_accountant.service.appointment.AppointmentService;
 import com.example.chartered_accountant.util.mapper.AppointmentMapper;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/appointment")
+@RequestMapping("/appointments")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -28,22 +28,24 @@ public class AppointmentController {
         this.appointmentService = appointmentService;
         log.info("Appointment Service Injected");
     }
-    @PostMapping("save")
-    public ResponseEntity<AppointmentResponseDto> createAppointment(@Valid  @RequestBody AppointmentSaveDto appointmentSaveDto) {
-        return ResponseEntity.ok(appointmentService.save(appointmentSaveDto));
+    @PostMapping("/{userId}")
+    public ResponseEntity<AppointmentResponseDto> createAppointment(@PathVariable UUID userId
+            ,@Valid  @RequestBody AppointmentRequestDto appointmentRequestDto) {
+        Appointment appointment = appointmentService.save(userId, appointmentRequestDto);
+        return ResponseEntity.ok(AppointmentMapper.toAppointmentResponseDto(appointment));
     }
 
-    @PutMapping("updateById/{id}")
-    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable UUID id ,@Valid @RequestBody AppointmentUpdateDto appointmentUpdateDto) {
-        return ResponseEntity.ok(appointmentService.update(appointmentUpdateDto,id));
+    @PutMapping("/{appointmentId}")
+    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable UUID appointmentId
+            ,@Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
+        Appointment updatedAppointment = appointmentService.update(appointmentId, appointmentRequestDto);
+        return ResponseEntity.ok(AppointmentMapper.toAppointmentResponseDto(updatedAppointment));
     }
 
-    @GetMapping("findByUserEmail/{userEmail}")
-    public ResponseEntity<List<AppointmentResponseDto>> findByUserEmail(@PathVariable String userEmail) {
-        return ResponseEntity.ok(appointmentService.findByUserEmail(userEmail));
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<AppointmentResponseDto>> getAppointments(@PathVariable UUID userId) {
+        List<Appointment> appointments = appointmentService.findByUserId(userId);
+        return ResponseEntity.ok(appointments.stream().map(AppointmentMapper::toAppointmentResponseDto).toList());
     }
-    @GetMapping("findAll")
-    public ResponseEntity<List<AppointmentResponseDto>> findAll() {
-        return ResponseEntity.ok(appointmentService.findAll());
-    }
+
 }

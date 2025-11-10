@@ -1,18 +1,19 @@
 package com.example.chartered_accountant.service.appointment;
 
-import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentSaveDto;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentUpdateDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
+import com.example.chartered_accountant.model.entity.Appointment;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentService {
-    AppointmentResponseDto save (AppointmentSaveDto appointmentSaveDto);
+    Appointment save (UUID userId, AppointmentRequestDto appointmentRequestDto);
 
-    AppointmentResponseDto update(AppointmentUpdateDto appointmentUpdateDto , UUID id);
+    Appointment update(UUID appointmentId,AppointmentRequestDto appointmentUpdateDto);
 
-    List<AppointmentResponseDto> findByUserEmail(String userEmail);
+    List<Appointment> findByUserId(UUID userId);
 
-    List<AppointmentResponseDto> findAll();
+    List<Appointment> findAll();
+
+    void deleteById(UUID appointmentId);
 }

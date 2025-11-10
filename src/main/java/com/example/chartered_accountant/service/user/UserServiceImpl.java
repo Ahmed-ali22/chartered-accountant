@@ -1,8 +1,8 @@
 package com.example.chartered_accountant.service.user;
 
 import com.example.chartered_accountant.error.exception.UserException;
-import com.example.chartered_accountant.model.dto.user.UserDto;
-import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
+import com.example.chartered_accountant.model.dto.user.UserRequestDto;
+import com.example.chartered_accountant.model.dto.user.UserResponseDto;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.repository.UserRepo;
 import com.example.chartered_accountant.util.mapper.UserMapper;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
@@ -26,36 +27,43 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void save(UserDto userDto) {
-        if(userRepo.existsByEmail(userDto.getEmail())) {
+    public void save(UserRequestDto userRequestDto) {
+        if(userRepo.existsByEmail(userRequestDto.getEmail())) {
             throw new UserException(
-                    409, "userConflict", "User already exists with email: "+ userDto.getEmail()
+                    409, "userConflict", "User already exists with email: "+ userRequestDto.getEmail()
             );
         }
-        User user = UserMapper.toEntity(userDto);
+        User user = UserMapper.toUserEntity(userRequestDto);
         userRepo.save(user);
-        log.info("New user added successfully");
+        log.info("New User Added Successfully");
 
     }
 
     @Override
-    public void update(UserUpdateDto userDto) {
-        User user = userRepo.findByEmail(userDto.getEmail())
+    public User update(UUID id , UserRequestDto userRequestDto) {
+        if(userRepo.existsByEmailAndIdNot(userRequestDto.getEmail() , id)) {
+            throw new UserException(
+                    409, "userConflict", "Email already in use :  " + userRequestDto.getEmail()
+            );
+        }
+        User user = userRepo.findById(id)
                 .orElseThrow(()-> new UserException(
-                        404, "userNotFound", "User not found with email: "+ userDto.getEmail()
+                        404, "userNotFound", "User not found with email: "+ userRequestDto.getEmail()
                 ));
-        userRepo.save(UserMapper.updateEntityFromDto(userDto,user));
-        log.info("User Email : {} successfully Updated  ", userDto.getEmail());
+        User updatedUser = UserMapper.updateEntityFromDto(userRequestDto,user);
+        userRepo.save(updatedUser);
+        log.info("User Email : {} successfully Updated  ", userRequestDto.getEmail());
+        return updatedUser;
     }
 
     @Override
-    public void deleteByEmail(String email) {
-        User user = userRepo.findByEmail(email)
+    public void deleteById(UUID id) {
+        User user = userRepo.findById(id)
                 .orElseThrow(()-> new UserException(
-                        404, "userNotFound", "User not found with email: "+ email
+                        404, "userNotFound", "User not found with ID: " + id
                 ));
         userRepo.delete(user);
-        log.info("User Successfully Deleted");
+        log.info("User Successfully Deleted with Email:{}", user.getEmail());
     }
 
     @Override
@@ -65,15 +73,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto findByEmail(String email) {
-        User user = userRepo.findByEmail(email)
-                .orElseThrow(()->new IllegalArgumentException ("User not found"));
-        log.info("User successfully Found  ");
-        return  UserMapper.toDto(user);
+    public User findById(UUID id) {
+        User user = userRepo.findById(id)
+                .orElseThrow(()-> new UserException(
+                404, "userNotFound", "User not found with ID: " + id
+        ));
+        log.info("User successfully Found ");
+        return  user;
     }
 
     @Override
-    public List<UserDto> findAll() {
+    public List<User> findAll() {
         List<User> userList = userRepo.findAll();
         if(userList.isEmpty()) {
             throw new UserException(
@@ -81,6 +91,6 @@ public class UserServiceImpl implements UserService{
             );
         }
         log.info("All Users Successfully Found");
-        return  userList.stream().map(UserMapper::toDto).toList();
+        return  userList;
     }
 }

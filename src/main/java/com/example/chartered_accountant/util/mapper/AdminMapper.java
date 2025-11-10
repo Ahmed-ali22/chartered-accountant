@@ -1,23 +1,30 @@
 package com.example.chartered_accountant.util.mapper;
 
-import com.example.chartered_accountant.model.dto.AdminDto;
+import com.example.chartered_accountant.model.dto.Admin.AdminRequestDto;
+import com.example.chartered_accountant.model.dto.Admin.AdminResponseDto;
 import com.example.chartered_accountant.model.entity.Admin;
 
 public class AdminMapper {
 
     private AdminMapper() {}
 
-    public static Admin toEntity (AdminDto adminDto) {
+    public static Admin toEntity (AdminRequestDto adminRequestDto) {
         Admin admin = new Admin();
-        admin.setUsername(adminDto.getUsername());
-        admin.setPassword(adminDto.getPassword());
+        admin.setUsername(adminRequestDto.getUsername());
+        admin.setPassword(adminRequestDto.getPassword());
         return admin;
     }
 
-    public static AdminDto toDto (Admin admin) {
-        AdminDto adminDto = new AdminDto();
-        adminDto.setUsername(admin.getUsername());
-        adminDto.setPassword(admin.getPassword());
-        return adminDto;
+    public static AdminResponseDto toDto (Admin admin) {
+       return AdminResponseDto.builder()
+                .id(admin.getId())
+                .username(admin.getUsername())
+                .build();
+    }
+
+    public static Admin updateToEntity(AdminRequestDto adminRequestDto, Admin admin) {
+        admin.setUsername(adminRequestDto.getUsername());
+        admin.setPassword(adminRequestDto.getPassword());
+        return admin;
     }
 }

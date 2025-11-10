@@ -13,5 +13,5 @@ public interface AppointmentRepo extends JpaRepository<Appointment, UUID> {
 
  boolean existsByDateTime(LocalDateTime dateTime);
 
- List<Appointment> findByUserEmail(String userEmail);
+ List<Appointment> findByUserId(UUID userId);
 }

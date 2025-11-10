@@ -1,8 +1,11 @@
 package com.example.chartered_accountant.controller;
 
-import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
+import com.example.chartered_accountant.model.dto.user.UserResponseDto;
+import com.example.chartered_accountant.model.entity.User;
+import com.example.chartered_accountant.util.mapper.AdminMapper;
+import com.example.chartered_accountant.util.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
-import com.example.chartered_accountant.model.dto.user.UserDto;
+import com.example.chartered_accountant.model.dto.user.UserRequestDto;
 import com.example.chartered_accountant.service.user.UserService;
 import jakarta.validation.Valid;
 
@@ -10,45 +13,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+
 
     @Autowired
     public UserController(UserService userService ) {
         log.info("User Service Injected");
         this.userService = userService;
     }
-    @PostMapping("save")
-    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) {
-            userService.save(userDto);
-            return ResponseEntity.ok("New user is Saved");
+
+    // save API in the account controller
+    @PostMapping()
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
+            userService.save(userRequestDto);
+            return ResponseEntity.ok("New User Created Successfully");
     }
-    @PutMapping("update")
-    public ResponseEntity<String> updateUser(@Valid @RequestBody UserUpdateDto userDto) {
-            userService.update(userDto);
-            return ResponseEntity.ok("User Updated Successfully");
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable UUID id
+            , @Valid @RequestBody UserRequestDto userDto) {
+       User user =  userService.update(id,userDto);
+            return ResponseEntity.ok(UserMapper.toUserResponseDto(user));
     }
-    @DeleteMapping("deleteByEmail/{email}")
-    public ResponseEntity<String> deleteUserByEmail(@PathVariable String email) {
-        userService.deleteByEmail(email);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
+        userService.deleteById(id);
         return  ResponseEntity.ok("User Deleted Successfully");
     }
-    @DeleteMapping("deleteAll")
-    public ResponseEntity<String> deleteAllUsers() {
-        userService.deleteAll();
-        return   ResponseEntity.ok("ALL Users Deleted Successfully");
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable UUID id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(UserMapper.toUserResponseDto(user));
     }
-    @GetMapping("findByEmail/{email}")
-    public UserDto findUserByEmail(@PathVariable String email) {
-            return userService.findByEmail(email);
-    }
-    @GetMapping("findAll")
-    public List<UserDto> findAllUsers() {
-        return userService.findAll();
-    }
+
 }

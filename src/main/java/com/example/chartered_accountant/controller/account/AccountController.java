@@ -1,8 +1,8 @@
 package com.example.chartered_accountant.controller.account;
 
 
-import com.example.chartered_accountant.model.dto.AdminDto;
-import com.example.chartered_accountant.model.dto.user.UserDto;
+import com.example.chartered_accountant.model.dto.Admin.AdminRequestDto;
+import com.example.chartered_accountant.model.dto.user.UserRequestDto;
 import com.example.chartered_accountant.service.admin.AdminService;
 import com.example.chartered_accountant.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,9 @@ public class AccountController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> registerUser(@RequestBody UserRequestDto userRequestDto) {
         try {
-            userService.save(userDto);
+            userService.save(userRequestDto);
             return ResponseEntity.ok("New user is registered");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -36,9 +36,9 @@ public class AccountController {
     }
 
     @PostMapping("admin")
-    public ResponseEntity<String> registerAdmin(@RequestBody AdminDto adminDto) {
+    public ResponseEntity<String> registerAdmin(@RequestBody AdminRequestDto adminRequestDto) {
         try {
-            adminService.save(adminDto);
+            adminService.save(adminRequestDto);
             return ResponseEntity.ok("New Admin is registered");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

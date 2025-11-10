@@ -24,4 +24,7 @@ public class AppointmentResponseDto {
 
     @NotBlank(message = "Type of service is required")
     private String service;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

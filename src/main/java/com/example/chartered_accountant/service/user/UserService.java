@@ -1,21 +1,23 @@
 package com.example.chartered_accountant.service.user;
 
-import com.example.chartered_accountant.model.dto.user.UserDto;
-import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
+import com.example.chartered_accountant.model.dto.user.UserRequestDto;
+import com.example.chartered_accountant.model.dto.user.UserResponseDto;
+import com.example.chartered_accountant.model.entity.User;
 
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
-    void save(UserDto userDto);
+    void save(UserRequestDto userRequestDto);
 
-    void update( UserUpdateDto userDto);
+    User update(UUID id , UserRequestDto userRequestDto);
 
-    void deleteByEmail(String email);
+    void deleteById(UUID id);
 
     void deleteAll();
 
-    UserDto findByEmail(String email);
+    User findById(UUID id);
 
-    List<UserDto> findAll();
+    List<User> findAll();
 }

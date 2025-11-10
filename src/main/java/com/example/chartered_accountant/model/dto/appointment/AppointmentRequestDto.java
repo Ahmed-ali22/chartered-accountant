@@ -11,14 +11,12 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class AppointmentSaveDto {
-    @NotBlank(message = "user Email is required")
-    private String userEmail;
+public class AppointmentRequestDto {
 
     @NotNull(message = "date and time are required")
     private LocalDateTime dateTime;
 
-    @NotBlank(message = "status is required")
+    @NotNull(message = "Status is required")
     @Pattern(regexp = "scheduled|completed|cancelled", message = "Status must be one of scheduled, completed, or cancelled")
     private String status;
 

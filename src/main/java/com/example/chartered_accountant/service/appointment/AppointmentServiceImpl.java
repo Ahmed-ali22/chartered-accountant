@@ -2,9 +2,7 @@ package com.example.chartered_accountant.service.appointment;
 
 import com.example.chartered_accountant.error.exception.AppointmentException;
 import com.example.chartered_accountant.error.exception.UserException;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentSaveDto;
-import com.example.chartered_accountant.model.dto.appointment.AppointmentUpdateDto;
+import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
 import com.example.chartered_accountant.model.entity.Appointment;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.repository.AppointmentRepo;
@@ -13,7 +11,6 @@ import com.example.chartered_accountant.util.mapper.AppointmentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -32,50 +29,50 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentResponseDto save(AppointmentSaveDto appointmentSaveDto) {
-        User user = userRepo.findByEmail(appointmentSaveDto.getUserEmail())
+    public Appointment save(UUID userId, AppointmentRequestDto appointmentRequestDto) {
+        User user = userRepo.findById(userId)
                 .orElseThrow(()-> new UserException(
-                        404, "userNotFound", "User not found with email: "+ appointmentSaveDto.getUserEmail()
+                        404, "userNotFound", "User not found with ID: "+ userId
                         ));
 
-        if (appointmentRepo.existsByDateTime(appointmentSaveDto.getDateTime())) {
+        if (appointmentRepo.existsByDateTime(appointmentRequestDto.getDateTime())) {
             throw new AppointmentException(
-                    409, "appointmentConflict", "Appointment already exists for date: " + appointmentSaveDto.getDateTime()
+                    409, "appointmentConflict", "Appointment already exists for date: " + appointmentRequestDto.getDateTime()
             );
         }
-        Appointment appointment = AppointmentMapper.saveToEntity(appointmentSaveDto,user);
-       Appointment SavedAppointment = appointmentRepo.save(appointment);
-        log.info("New Appointment Created by User Email :{}", appointmentSaveDto.getUserEmail());
-        return AppointmentMapper.responseToDto(SavedAppointment);
+        Appointment appointment = AppointmentMapper.toAppointmentEntity(appointmentRequestDto,user);
+       Appointment savedAppointment = appointmentRepo.save(appointment);
+        log.info("New Appointment Created by User Email :{}", user.getEmail());
+        return savedAppointment;
     }
 
     @Override
-    public AppointmentResponseDto update(AppointmentUpdateDto appointmentUpdateDto, UUID id) {
-        Appointment appointment = appointmentRepo.findById(id)
+    public Appointment update(UUID appointmentId,AppointmentRequestDto appointmentRequestDto ) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppointmentException(
-                        404, "appointmentNotFound","Appointment with id " + id + " does not exist"
+                        404, "appointmentNotFound","Appointment with id " + appointmentId + " does not exist"
                 ));
        Appointment updatedAppointment = appointmentRepo
-               .save(AppointmentMapper.updateToEntity(appointmentUpdateDto, appointment));
+               .save(AppointmentMapper.updateToEntity(appointmentRequestDto, appointment));
        log.info("Appointment of User Email : {} successfully Updated  ", appointment.getUser().getEmail());
-       return AppointmentMapper.responseToDto(updatedAppointment);
+       return updatedAppointment;
     }
 
 
     @Override
-    public List<AppointmentResponseDto> findByUserEmail(String userEmail) {
-        List<Appointment> appointments = appointmentRepo.findByUserEmail(userEmail);
+    public List<Appointment> findByUserId(UUID userId) {
+        List<Appointment> appointments = appointmentRepo.findByUserId(userId);
         if(appointments.isEmpty()) {
             throw new AppointmentException(
-                    404, "noAppointmentsForUser", "No appointments found for user email: " + userEmail
+                    404, "noAppointmentsForUser", "No appointments found for user Id: " + userId
             );
         }
-        log.info("Appointments of User Email : {} successfully Founded  ", userEmail);
-        return appointments.stream().map(AppointmentMapper :: responseToDto).toList();
+        log.info("Appointments of User Email : {} successfully Founded  ", userId);
+        return appointments;
     }
 
     @Override
-    public List<AppointmentResponseDto> findAll() {
+    public List<Appointment> findAll() {
         List<Appointment> appointments = appointmentRepo.findAll();
         if(appointments.isEmpty()) {
             throw new AppointmentException(
@@ -83,6 +80,16 @@ public class AppointmentServiceImpl implements AppointmentService {
             );
         }
         log.info("All Appointments Successfully Founded");
-        return appointments.stream().map(AppointmentMapper :: responseToDto).toList();
+        return appointments;
+    }
+
+    @Override
+    public void deleteById(UUID appointmentId) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppointmentException(
+                        404, "appointmentNotFound","Appointment with ID " + appointmentId + " does not exist"
+                ));
+        appointmentRepo.delete(appointment);
+        log.info("Appointment Successfully Deleted With ID : {}",appointment.getId());
     }
 }

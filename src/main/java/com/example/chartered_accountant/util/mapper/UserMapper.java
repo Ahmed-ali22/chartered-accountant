@@ -1,7 +1,8 @@
 package com.example.chartered_accountant.util.mapper;
 
-import com.example.chartered_accountant.model.dto.user.UserDto;
-import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
+import com.example.chartered_accountant.model.dto.user.AdminUserResponseDto;
+import com.example.chartered_accountant.model.dto.user.UserRequestDto;
+import com.example.chartered_accountant.model.dto.user.UserResponseDto;
 import com.example.chartered_accountant.model.entity.User;
 
 import java.util.Optional;
@@ -10,34 +11,46 @@ public class UserMapper {
 
     private UserMapper() {}
 
-    public static User toEntity(UserDto userDto) {
+    public static User toUserEntity(UserRequestDto userRequestDto) {
         return User.builder()
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .phoneNumber(userDto.getPhoneNumber())
-                .companyName(Optional.ofNullable(userDto.getCompanyName()).orElse(""))
-                .description(Optional.ofNullable(userDto.getDescription()).orElse(""))
+                .name(userRequestDto.getName())
+                .email(userRequestDto.getEmail())
+                .password(userRequestDto.getPassword())
+                .phoneNumber(userRequestDto.getPhoneNumber())
+                .companyName(Optional.ofNullable(userRequestDto.getCompanyName()).orElse(""))
+                .description(Optional.ofNullable(userRequestDto.getDescription()).orElse(""))
                 .build();
     }
 
-    public static UserDto toDto(User user) {
-        return UserDto.builder()
+    public static UserResponseDto toUserResponseDto(User user) {
+        return UserResponseDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
                 .companyName(Optional.ofNullable(user.getCompanyName()).orElse(""))
                 .description(Optional.ofNullable(user.getDescription()).orElse(""))
                 .build();
     }
 
-    public static User updateEntityFromDto(UserUpdateDto userDto , User user) {
-        user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setCompanyName(userDto.getCompanyName());
-        user.setDescription(userDto.getDescription());
+    public static AdminUserResponseDto toAdminUserResponseDto(User user) {
+        return AdminUserResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .companyName(Optional.ofNullable(user.getCompanyName()).orElse(""))
+                .description(Optional.ofNullable(user.getDescription()).orElse(""))
+                .build();
+    }
+
+
+    public static User updateEntityFromDto(UserRequestDto userRequestDto, User user) {
+        user.setName(userRequestDto.getName());
+        user.setEmail(userRequestDto.getEmail());
+        user.setPassword(userRequestDto.getPassword());
+        user.setPhoneNumber(userRequestDto.getPhoneNumber());
+        user.setCompanyName(userRequestDto.getCompanyName());
+        user.setDescription(userRequestDto.getDescription());
         return user;
     }
 
