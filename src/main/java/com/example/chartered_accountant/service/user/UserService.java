@@ -1,7 +1,6 @@
 package com.example.chartered_accountant.service.user;
 
 import com.example.chartered_accountant.model.dto.user.UserRequestDto;
-import com.example.chartered_accountant.model.dto.user.UserResponseDto;
 import com.example.chartered_accountant.model.entity.User;
 
 

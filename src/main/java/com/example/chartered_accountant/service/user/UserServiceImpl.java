@@ -8,6 +8,7 @@ import com.example.chartered_accountant.repository.UserRepo;
 import com.example.chartered_accountant.util.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService{
 
     private  final  UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserServiceImpl(UserRepo userRepo) {
+    UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
         log.info(" User Repository injected successfully ");
     }
 
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService{
             );
         }
         User user = UserMapper.toUserEntity(userRequestDto);
+        user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         userRepo.save(user);
         log.info("New User Added Successfully");
 

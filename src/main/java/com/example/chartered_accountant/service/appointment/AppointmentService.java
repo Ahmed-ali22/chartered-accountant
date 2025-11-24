@@ -9,7 +9,9 @@ import java.util.UUID;
 public interface AppointmentService {
     Appointment save (UUID userId, AppointmentRequestDto appointmentRequestDto);
 
-    Appointment update(UUID appointmentId,AppointmentRequestDto appointmentUpdateDto);
+    Appointment updateForUser(UUID appointmentId,UUID userId,AppointmentRequestDto appointmentRequestDto);
+
+    Appointment updateForAdmin(UUID appointmentId,AppointmentRequestDto appointmentRequestDto);
 
     List<Appointment> findByUserId(UUID userId);
 

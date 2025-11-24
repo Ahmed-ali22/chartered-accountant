@@ -3,12 +3,15 @@ package com.example.chartered_accountant.controller;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
 import com.example.chartered_accountant.model.entity.Appointment;
+import com.example.chartered_accountant.service.CustomUserDetailsService;
 import com.example.chartered_accountant.service.appointment.AppointmentService;
 import com.example.chartered_accountant.util.mapper.AppointmentMapper;
+import com.example.chartered_accountant.util.security.CustomUserPrincipal;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,23 +31,23 @@ public class AppointmentController {
         this.appointmentService = appointmentService;
         log.info("Appointment Service Injected");
     }
-    @PostMapping("/{userId}")
-    public ResponseEntity<AppointmentResponseDto> createAppointment(@PathVariable UUID userId
-            ,@Valid  @RequestBody AppointmentRequestDto appointmentRequestDto) {
-        Appointment appointment = appointmentService.save(userId, appointmentRequestDto);
+    @PostMapping("/me")
+    public ResponseEntity<AppointmentResponseDto> createAppointment(@AuthenticationPrincipal CustomUserPrincipal principal
+            , @Valid  @RequestBody AppointmentRequestDto appointmentRequestDto) {
+        Appointment appointment = appointmentService.save(principal.getUserId(), appointmentRequestDto);
         return ResponseEntity.ok(AppointmentMapper.toAppointmentResponseDto(appointment));
     }
 
     @PutMapping("/{appointmentId}")
     public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable UUID appointmentId
-            ,@Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
-        Appointment updatedAppointment = appointmentService.update(appointmentId, appointmentRequestDto);
+            ,@AuthenticationPrincipal CustomUserPrincipal principal,@Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
+        Appointment updatedAppointment = appointmentService.updateForUser(appointmentId,principal.getUserId(), appointmentRequestDto);
         return ResponseEntity.ok(AppointmentMapper.toAppointmentResponseDto(updatedAppointment));
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<AppointmentResponseDto>> getAppointments(@PathVariable UUID userId) {
-        List<Appointment> appointments = appointmentService.findByUserId(userId);
+    @GetMapping("/me")
+    public ResponseEntity<List<AppointmentResponseDto>> getAppointments(@AuthenticationPrincipal CustomUserPrincipal principal) {
+        List<Appointment> appointments = appointmentService.findByUserId(principal.getUserId());
         return ResponseEntity.ok(appointments.stream().map(AppointmentMapper::toAppointmentResponseDto).toList());
     }
 

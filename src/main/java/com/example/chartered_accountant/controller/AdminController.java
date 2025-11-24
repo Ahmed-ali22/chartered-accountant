@@ -76,7 +76,7 @@ public class AdminController {
     @PutMapping("/appointments/{appointmentId}")
     public ResponseEntity<AdminAppointmentResponseDto> updateAppointment(@PathVariable UUID appointmentId
             , @Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
-        Appointment updatedAppointment = appointmentService.update(appointmentId, appointmentRequestDto);
+        Appointment updatedAppointment = appointmentService.updateForAdmin(appointmentId, appointmentRequestDto);
         AdminAppointmentResponseDto appointmentDto = AppointmentMapper.toAdminAppointmentResponseDto(updatedAppointment);
         return ResponseEntity.ok(appointmentDto);
     }

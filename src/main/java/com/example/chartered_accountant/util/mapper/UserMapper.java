@@ -15,7 +15,7 @@ public class UserMapper {
         return User.builder()
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
-                .password(userRequestDto.getPassword())
+                .password( userRequestDto.getPassword())
                 .phoneNumber(userRequestDto.getPhoneNumber())
                 .companyName(Optional.ofNullable(userRequestDto.getCompanyName()).orElse(""))
                 .description(Optional.ofNullable(userRequestDto.getDescription()).orElse(""))

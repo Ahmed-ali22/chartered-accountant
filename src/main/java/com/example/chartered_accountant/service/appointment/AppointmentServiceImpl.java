@@ -47,15 +47,31 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment update(UUID appointmentId,AppointmentRequestDto appointmentRequestDto ) {
+    public Appointment updateForUser(UUID appointmentId,UUID userId,AppointmentRequestDto appointmentRequestDto ) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppointmentException(
                         404, "appointmentNotFound","Appointment with id " + appointmentId + " does not exist"
                 ));
+        if (!appointment.getUser().getId().equals(userId)) {
+            throw new AppointmentException(403, "forbiddenAccess", "You cannot update this appointment");
+        }
        Appointment updatedAppointment = appointmentRepo
                .save(AppointmentMapper.updateToEntity(appointmentRequestDto, appointment));
        log.info("Appointment of User Email : {} successfully Updated  ", appointment.getUser().getEmail());
        return updatedAppointment;
+    }
+
+    @Override
+    public Appointment updateForAdmin(UUID appointmentId, AppointmentRequestDto appointmentRequestDto) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppointmentException(
+                        404, "appointmentNotFound","Appointment with id " + appointmentId + " does not exist"
+                ));
+
+        Appointment updatedAppointment = appointmentRepo
+                .save(AppointmentMapper.updateToEntity(appointmentRequestDto, appointment));
+        log.info("Appointment with id {} successfully Updated by Admin", appointmentId);
+        return updatedAppointment;
     }
 
 
@@ -89,6 +105,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new AppointmentException(
                         404, "appointmentNotFound","Appointment with ID " + appointmentId + " does not exist"
                 ));
+
         appointmentRepo.delete(appointment);
         log.info("Appointment Successfully Deleted With ID : {}",appointment.getId());
     }
