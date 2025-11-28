@@ -27,9 +27,9 @@ public class JwtUtil {
         Date exp = new Date(now.getTime() +  expirationMillis);
 
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDetails.getUserId().toString())
                 .claim("roles",roles)
-                .claim("userId",userDetails.getUserId())
+                .claim("email",userDetails.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -44,10 +44,10 @@ public class JwtUtil {
         }
     }
     public String extractUsername(String token) {
-        return parseClaims(token).getSubject();
+        return parseClaims(token).get("email", String.class);
     }
     public UUID extractUserId(String token) {
-        return parseClaims(token).get("userId", UUID.class);
+        return UUID.fromString(parseClaims(token).getSubject());
     }
     public Collection <SimpleGrantedAuthority> extractAuthorities(String token) {
         String roles = parseClaims(token).get("roles",String.class);

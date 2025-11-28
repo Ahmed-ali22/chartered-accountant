@@ -8,6 +8,7 @@ import com.example.chartered_accountant.repository.AdminRepo;
 import com.example.chartered_accountant.util.mapper.AdminMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +19,12 @@ import java.util.UUID;
 public class AdminServiceImpl  implements AdminService{
 
     private final AdminRepo adminRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminServiceImpl(AdminRepo adminRepo){
+    public AdminServiceImpl(AdminRepo adminRepo, PasswordEncoder passwordEncoder){
         this.adminRepo = adminRepo;
+        this.passwordEncoder = passwordEncoder;
         log.info(" Admin Repository injected successfully ");
     }
 
@@ -33,6 +36,7 @@ public class AdminServiceImpl  implements AdminService{
             );
         }
         Admin admin = AdminMapper.toEntity(adminRequestDto);
+        admin.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
         adminRepo.save(admin);
         log.info("New Admin added successfully");
     }
