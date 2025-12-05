@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -36,7 +37,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .authorities(authorities)
                     .build();
         }
-
         // If not found, check in admin table
         Admin a = admins.findByUsername(username).orElse(null);
         if (a != null) {
@@ -48,8 +48,28 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .authorities(authorities)
                     .build();
         }
-
         // If neither found
         throw new UsernameNotFoundException("User not found: " + username);
+    }
+    public UserDetails loadUserById(UUID userId) throws UsernameNotFoundException {
+        User u = users.findById(userId).orElse(null);
+        if (u != null) {
+            return CustomUserPrincipal.builder()
+                    .userId(u.getId())
+                    .username(u.getEmail())
+                    .password(u.getPassword())
+                    .authorities(List.of(new SimpleGrantedAuthority("ROLE_USER")))
+                    .build();
+        }
+        Admin a = admins.findById(userId).orElse(null);
+        if (a != null) {
+            return CustomUserPrincipal.builder()
+                    .userId(a.getId())
+                    .username(a.getUsername())
+                    .password(a.getPassword())
+                    .authorities(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                    .build();
+        }
+        throw new UsernameNotFoundException("User not found with ID: " + userId);
     }
 }

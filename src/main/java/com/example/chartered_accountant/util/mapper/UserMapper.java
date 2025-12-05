@@ -3,6 +3,7 @@ package com.example.chartered_accountant.util.mapper;
 import com.example.chartered_accountant.model.dto.user.AdminUserResponseDto;
 import com.example.chartered_accountant.model.dto.user.UserRequestDto;
 import com.example.chartered_accountant.model.dto.user.UserResponseDto;
+import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
 
 import java.util.Optional;
@@ -44,13 +45,12 @@ public class UserMapper {
     }
 
 
-    public static User updateEntityFromDto(UserRequestDto userRequestDto, User user) {
-        user.setName(userRequestDto.getName());
-        user.setEmail(userRequestDto.getEmail());
-        user.setPassword(userRequestDto.getPassword());
-        user.setPhoneNumber(userRequestDto.getPhoneNumber());
-        user.setCompanyName(userRequestDto.getCompanyName());
-        user.setDescription(userRequestDto.getDescription());
+    public static User updateEntityFromDto(UserUpdateDto userUpdateDto, User user) {
+        user.setName(userUpdateDto.getName());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setPhoneNumber(userUpdateDto.getPhoneNumber());
+        user.setCompanyName(userUpdateDto.getCompanyName());
+        user.setDescription(userUpdateDto.getDescription());
         return user;
     }
 

@@ -1,8 +1,10 @@
 package com.example.chartered_accountant.service.user;
 
 import com.example.chartered_accountant.error.exception.UserException;
+import com.example.chartered_accountant.model.dto.user.PasswordUpdateDto;
 import com.example.chartered_accountant.model.dto.user.UserRequestDto;
 import com.example.chartered_accountant.model.dto.user.UserResponseDto;
+import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.repository.UserRepo;
 import com.example.chartered_accountant.util.mapper.UserMapper;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -44,19 +47,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User update(UUID id , UserRequestDto userRequestDto) {
-        if(userRepo.existsByEmailAndIdNot(userRequestDto.getEmail() , id)) {
+    public User update(UUID id , UserUpdateDto userUpdateDto) {
+        if(userRepo.existsByEmailAndIdNot(userUpdateDto.getEmail() , id)) {
             throw new UserException(
-                    409, "userConflict", "Email already in use :  " + userRequestDto.getEmail()
+                    409, "userConflict", "Email already in use :  " + userUpdateDto.getEmail()
             );
         }
         User user = userRepo.findById(id)
                 .orElseThrow(()-> new UserException(
-                        404, "userNotFound", "User not found with email: "+ userRequestDto.getEmail()
+                        404, "userNotFound", "User not found with email: "+ userUpdateDto.getEmail()
                 ));
-        User updatedUser = UserMapper.updateEntityFromDto(userRequestDto,user);
+        User updatedUser = UserMapper.updateEntityFromDto(userUpdateDto,user);
         userRepo.save(updatedUser);
-        log.info("User Email : {} successfully Updated  ", userRequestDto.getEmail());
+        log.info("User Email : {} successfully Updated  ", userUpdateDto.getEmail());
         return updatedUser;
     }
 
@@ -96,5 +99,19 @@ public class UserServiceImpl implements UserService{
         }
         log.info("All Users Successfully Found");
         return  userList;
+    }
+
+    @Override
+    public void updatePassword(UUID id, PasswordUpdateDto passwordUpdateDto) {
+        User user = userRepo.findById(id).orElseThrow(()->new UserException(
+                404, "userNotFound" , "User not found with ID : " + id
+        ));
+        if (passwordEncoder.matches(passwordUpdateDto.getOldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
+            userRepo.save(user);
+            log.info("Password of User Email {} , Updated Successfully ",user.getEmail());
+        } else {
+            throw new UserException(400, "invalidPassword", "Old password is incorrect");
+        }
     }
 }

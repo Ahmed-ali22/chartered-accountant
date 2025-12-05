@@ -4,6 +4,7 @@ import com.example.chartered_accountant.model.dto.appointment.AdminAppointmentRe
 import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
 import com.example.chartered_accountant.model.dto.user.AdminUserResponseDto;
 import com.example.chartered_accountant.model.dto.user.UserRequestDto;
+import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.Appointment;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.service.appointment.AppointmentService;
@@ -47,8 +48,8 @@ public class AdminController {
         return ResponseEntity.ok(userDto);
     }
     @PutMapping("/users/{id}")
-    public ResponseEntity<AdminUserResponseDto> updateUser(@PathVariable UUID id , @Valid @RequestBody UserRequestDto userRequestDto) {
-        User user =  userService.update(id,userRequestDto);
+    public ResponseEntity<AdminUserResponseDto> updateUser(@PathVariable UUID id , @Valid @RequestBody UserUpdateDto userUpdateDto) {
+        User user =  userService.update(id,userUpdateDto);
         AdminUserResponseDto userDto = UserMapper.toAdminUserResponseDto(user);
         return ResponseEntity.ok(userDto);
     }

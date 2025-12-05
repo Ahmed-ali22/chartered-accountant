@@ -1,6 +1,8 @@
 package com.example.chartered_accountant.controller;
 
+import com.example.chartered_accountant.model.dto.user.PasswordUpdateDto;
 import com.example.chartered_accountant.model.dto.user.UserResponseDto;
+import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.util.mapper.UserMapper;
 import com.example.chartered_accountant.util.security.CustomUserPrincipal;
@@ -31,8 +33,8 @@ public class UserController {
 
     @PutMapping("/me")
     public ResponseEntity<UserResponseDto> updateUser(@AuthenticationPrincipal CustomUserPrincipal principal
-            , @Valid @RequestBody UserRequestDto userDto) {
-       User user =  userService.update(principal.getUserId(),userDto);
+            , @Valid @RequestBody UserUpdateDto userUpdateDto) {
+       User user =  userService.update(principal.getUserId(),userUpdateDto);
             return ResponseEntity.ok(UserMapper.toUserResponseDto(user));
     }
 
@@ -46,6 +48,13 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUser(@AuthenticationPrincipal CustomUserPrincipal principal) {
         User user = userService.findById(principal.getUserId());
         return ResponseEntity.ok(UserMapper.toUserResponseDto(user));
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<String> updateUserPassword(@AuthenticationPrincipal CustomUserPrincipal principal
+            , @Valid @RequestBody PasswordUpdateDto passwordUpdateDto) {
+        userService.updatePassword(principal.getUserId(),passwordUpdateDto);
+        return ResponseEntity.ok("User Password Updated Successfully");
     }
 
 }
