@@ -3,7 +3,6 @@ package com.example.chartered_accountant.controller;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
 import com.example.chartered_accountant.model.entity.Appointment;
-import com.example.chartered_accountant.service.CustomUserDetailsService;
 import com.example.chartered_accountant.service.appointment.AppointmentService;
 import com.example.chartered_accountant.util.mapper.AppointmentMapper;
 import com.example.chartered_accountant.util.security.CustomUserPrincipal;

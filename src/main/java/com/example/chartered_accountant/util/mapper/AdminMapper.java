@@ -16,10 +16,10 @@ public class AdminMapper {
     }
 
     public static AdminResponseDto toDto (Admin admin) {
-       return AdminResponseDto.builder()
-                .id(admin.getId())
-                .username(admin.getUsername())
-                .build();
+        AdminResponseDto dto = new AdminResponseDto();
+        dto.setId(admin.getId());
+        dto.setUsername(admin.getUsername());
+        return dto;
     }
 
     public static Admin updateToEntity(AdminRequestDto adminRequestDto, Admin admin) {

@@ -7,7 +7,6 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-@Builder
 public class AdminResponseDto {
     @NotNull
     private UUID id;
