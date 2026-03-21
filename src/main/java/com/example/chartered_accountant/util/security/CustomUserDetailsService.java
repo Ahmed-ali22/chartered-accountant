@@ -1,10 +1,9 @@
-package com.example.chartered_accountant.service;
+package com.example.chartered_accountant.util.security;
 
 import com.example.chartered_accountant.model.entity.Admin;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.repository.AdminRepo;
 import com.example.chartered_accountant.repository.UserRepo;
-import com.example.chartered_accountant.util.security.CustomUserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
