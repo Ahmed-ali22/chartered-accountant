@@ -5,7 +5,7 @@ import com.example.chartered_accountant.model.dto.Admin.AdminRequestDto;
 import com.example.chartered_accountant.model.dto.Admin.AdminResponseDto;
 import com.example.chartered_accountant.model.entity.Admin;
 import com.example.chartered_accountant.repository.AdminRepo;
-import com.example.chartered_accountant.util.mapper.AdminMapper;
+import com.example.chartered_accountant.mapper.AdminMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

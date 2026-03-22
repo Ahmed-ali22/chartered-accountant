@@ -4,10 +4,9 @@ import com.example.chartered_accountant.model.dto.user.PasswordUpdateDto;
 import com.example.chartered_accountant.model.dto.user.UserResponseDto;
 import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
-import com.example.chartered_accountant.util.mapper.UserMapper;
-import com.example.chartered_accountant.util.security.CustomUserPrincipal;
+import com.example.chartered_accountant.mapper.UserMapper;
+import com.example.chartered_accountant.security.CustomUserPrincipal;
 import lombok.extern.slf4j.Slf4j;
-import com.example.chartered_accountant.model.dto.user.UserRequestDto;
 import com.example.chartered_accountant.service.user.UserService;
 import jakarta.validation.Valid;
 
@@ -15,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.access.prepost.PreAuthorize;
-import java.util.UUID;
 
 
 @Slf4j

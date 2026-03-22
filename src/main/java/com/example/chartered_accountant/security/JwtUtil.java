@@ -1,4 +1,4 @@
-package com.example.chartered_accountant.util.security;
+package com.example.chartered_accountant.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

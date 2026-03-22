@@ -1,8 +1,8 @@
 package com.example.chartered_accountant.config;
 
-import com.example.chartered_accountant.util.security.CustomUserDetailsService;
-import com.example.chartered_accountant.util.security.JwtAuthenticationFilter;
-import com.example.chartered_accountant.util.security.JwtUtil;
+import com.example.chartered_accountant.security.CustomUserDetailsService;
+import com.example.chartered_accountant.security.JwtAuthenticationFilter;
+import com.example.chartered_accountant.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

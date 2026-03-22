@@ -1,4 +1,4 @@
-package com.example.chartered_accountant.util.security;
+package com.example.chartered_accountant.security;
 
 import com.example.chartered_accountant.model.entity.Admin;
 import com.example.chartered_accountant.model.entity.User;

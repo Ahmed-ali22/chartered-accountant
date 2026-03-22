@@ -3,18 +3,16 @@ package com.example.chartered_accountant.service.user;
 import com.example.chartered_accountant.error.exception.UserException;
 import com.example.chartered_accountant.model.dto.user.PasswordUpdateDto;
 import com.example.chartered_accountant.model.dto.user.UserRequestDto;
-import com.example.chartered_accountant.model.dto.user.UserResponseDto;
 import com.example.chartered_accountant.model.dto.user.UserUpdateDto;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.repository.UserRepo;
-import com.example.chartered_accountant.util.mapper.UserMapper;
+import com.example.chartered_accountant.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 

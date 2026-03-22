@@ -1,4 +1,4 @@
-package com.example.chartered_accountant.util.security;
+package com.example.chartered_accountant.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

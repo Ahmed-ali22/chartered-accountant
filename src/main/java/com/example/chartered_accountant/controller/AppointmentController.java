@@ -4,8 +4,8 @@ import com.example.chartered_accountant.model.dto.appointment.AppointmentRespons
 import com.example.chartered_accountant.model.dto.appointment.AppointmentRequestDto;
 import com.example.chartered_accountant.model.entity.Appointment;
 import com.example.chartered_accountant.service.appointment.AppointmentService;
-import com.example.chartered_accountant.util.mapper.AppointmentMapper;
-import com.example.chartered_accountant.util.security.CustomUserPrincipal;
+import com.example.chartered_accountant.mapper.AppointmentMapper;
+import com.example.chartered_accountant.security.CustomUserPrincipal;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.chartered_accountant.util.mapper;
+package com.example.chartered_accountant.mapper;
 
 import com.example.chartered_accountant.model.dto.appointment.AdminAppointmentResponseDto;
 import com.example.chartered_accountant.model.dto.appointment.AppointmentResponseDto;

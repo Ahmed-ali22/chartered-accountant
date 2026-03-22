@@ -7,7 +7,7 @@ import com.example.chartered_accountant.model.entity.Appointment;
 import com.example.chartered_accountant.model.entity.User;
 import com.example.chartered_accountant.repository.AppointmentRepo;
 import com.example.chartered_accountant.repository.UserRepo;
-import com.example.chartered_accountant.util.mapper.AppointmentMapper;
+import com.example.chartered_accountant.mapper.AppointmentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

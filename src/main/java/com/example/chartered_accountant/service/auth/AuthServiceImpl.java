@@ -2,8 +2,8 @@ package com.example.chartered_accountant.service.auth;
 
 import com.example.chartered_accountant.model.dto.Auth.AuthRequestDto;
 import com.example.chartered_accountant.model.dto.Auth.AuthResponseDto;
-import com.example.chartered_accountant.util.security.CustomUserPrincipal;
-import com.example.chartered_accountant.util.security.JwtUtil;
+import com.example.chartered_accountant.security.CustomUserPrincipal;
+import com.example.chartered_accountant.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
