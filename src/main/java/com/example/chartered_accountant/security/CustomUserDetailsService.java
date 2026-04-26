@@ -25,18 +25,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // First check in user table
         User u = users.findByEmail(username).orElse(null);
         if (u != null) {
             var authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-            return CustomUserPrincipal.builder()
+            return CustomUserPrincipal.builder( )
                     .userId(u.getId())
                     .username(u.getEmail())
                     .password(u.getPassword())
                     .authorities(authorities)
                     .build();
         }
-        // If not found, check in admin table
         Admin a = admins.findByUsername(username).orElse(null);
         if (a != null) {
             var authorities = List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -47,7 +45,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .authorities(authorities)
                     .build();
         }
-        // If neither found
         throw new UsernameNotFoundException("User not found: " + username);
     }
     public UserDetails loadUserById(UUID userId) throws UsernameNotFoundException {
