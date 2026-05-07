@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
+    private final Jwt jwt;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
-        this.jwtUtil = jwtUtil;
+    public JwtAuthenticationFilter(Jwt jwt, CustomUserDetailsService customUserDetailsService) {
+        this.jwt = jwt;
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -29,10 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if(header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
-            if(jwtUtil.validateToken(token)) {
-                UUID userId = jwtUtil.extractUserId(token);
+            if(jwt.validateToken(token)) {
+                UUID userId = jwt.extractUserId(token);
                 UserDetails userDetails = customUserDetailsService.loadUserById(userId);
-                var authorities = jwtUtil.extractAuthorities(token);
+                var authorities = jwt.extractAuthorities(token);
                 var auth = new UsernamePasswordAuthenticationToken(userDetails , null , authorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

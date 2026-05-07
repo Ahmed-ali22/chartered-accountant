@@ -3,7 +3,7 @@ package com.example.chartered_accountant.service.auth;
 import com.example.chartered_accountant.model.dto.Auth.AuthRequestDto;
 import com.example.chartered_accountant.model.dto.Auth.AuthResponseDto;
 import com.example.chartered_accountant.security.CustomUserPrincipal;
-import com.example.chartered_accountant.security.JwtUtil;
+import com.example.chartered_accountant.security.Jwt;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +28,7 @@ public class AuthServiceImplTest {
     private AuthenticationManager authManager;
 
     @Mock
-    private JwtUtil jwtUtil;
+    private Jwt jwt;
 
     @InjectMocks
     private AuthServiceImpl authService;
@@ -46,7 +46,7 @@ public class AuthServiceImplTest {
 
         when(authManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
-        when(jwtUtil.generateToken(principal)).thenReturn("jwt-token");
+        when(jwt.generateToken(principal)).thenReturn("jwt-token");
 
         AuthResponseDto response = authService.login(requestDto);
 

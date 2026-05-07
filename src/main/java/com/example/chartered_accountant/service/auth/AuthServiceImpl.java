@@ -3,7 +3,7 @@ package com.example.chartered_accountant.service.auth;
 import com.example.chartered_accountant.model.dto.Auth.AuthRequestDto;
 import com.example.chartered_accountant.model.dto.Auth.AuthResponseDto;
 import com.example.chartered_accountant.security.CustomUserPrincipal;
-import com.example.chartered_accountant.security.JwtUtil;
+import com.example.chartered_accountant.security.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager authManager;
-    private final JwtUtil jwtUtil;
+    private final Jwt jwt;
 
     @Autowired
-    public AuthServiceImpl(AuthenticationManager authManager, JwtUtil jwtUtil) {
+    public AuthServiceImpl(AuthenticationManager authManager, Jwt jwt) {
         this.authManager = authManager;
-        this.jwtUtil = jwtUtil;
+        this.jwt = jwt;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService{
                 new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(), authRequestDto.getPassword())
         );
         CustomUserPrincipal userDetails = (CustomUserPrincipal) auth.getPrincipal();
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwt.generateToken(userDetails);
         return new AuthResponseDto(token);
     }
 }

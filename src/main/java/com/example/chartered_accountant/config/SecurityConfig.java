@@ -2,7 +2,7 @@ package com.example.chartered_accountant.config;
 
 import com.example.chartered_accountant.security.CustomUserDetailsService;
 import com.example.chartered_accountant.security.JwtAuthenticationFilter;
-import com.example.chartered_accountant.security.JwtUtil;
+import com.example.chartered_accountant.security.Jwt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +38,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtUtil jwtUtil() {
-        return new JwtUtil(jwtSecret,jwtExpiry);
+    public Jwt jwtUtil() {
+        return new Jwt(jwtSecret,jwtExpiry);
     }
 
     @Bean

@@ -11,11 +11,11 @@ import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JwtUtil {
+public class Jwt {
     private final Key key;
     private final Long expirationMillis;
 
-    public JwtUtil(String secret, Long expirationMillis) {
+    public Jwt(String secret, Long expirationMillis) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMillis = expirationMillis;
     }
