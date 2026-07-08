@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CharteredAccountantApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(CharteredAccountantApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(CharteredAccountantApplication.class, args);
+    }
 }
