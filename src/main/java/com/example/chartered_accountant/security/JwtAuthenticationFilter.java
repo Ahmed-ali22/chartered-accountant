@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(jwt.validateToken(token)) {
                 UUID userId = jwt.extractUserId(token);
                 UserDetails userDetails = customUserDetailsService.loadUserById(userId);
-                var authorities = jwt.extractAuthorities(token);
+                var authorities = userDetails.getAuthorities();
                 var auth = new UsernamePasswordAuthenticationToken(userDetails , null , authorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

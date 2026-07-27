@@ -66,7 +66,7 @@ public class AdminController {
                 .stream().map(AppointmentMapper::toAdminAppointmentResponseDto).toList();
         return ResponseEntity.ok(appointmentsDto);
     }
-    @GetMapping("/appointments/{userId}")
+    @GetMapping("/users/{userId}/appointments")
     public ResponseEntity<List<AdminAppointmentResponseDto>> getAppointments(@PathVariable UUID userId) {
         List<Appointment> appointments = appointmentService.findByUserId(userId);
         List<AdminAppointmentResponseDto> appointmentsDto = appointments

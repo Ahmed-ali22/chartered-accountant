@@ -6,5 +6,5 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
     <include file="db.changelog/changeset/001-init_schema.xml" relativeToChangelogFile="false" author="ahmed"/>
-
+    <include file="db.changelog/changeset/002-add-refresh-token.xml" relativeToChangelogFile="false" author="ahmed"/>
 </databaseChangeLog>

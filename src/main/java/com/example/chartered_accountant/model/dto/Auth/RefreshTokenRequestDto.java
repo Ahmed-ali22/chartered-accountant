@@ -1,5 +1,6 @@
 package com.example.chartered_accountant.model.dto.Auth;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponseDto {
-    private String accessToken;
+public class RefreshTokenRequestDto {
+    @NotBlank(message = "Refresh token cannot be blank")
     private String refreshToken;
 }
-
