@@ -5,13 +5,16 @@ import com.example.chartered_accountant.model.dto.Admin.AdminRequestDto;
 import com.example.chartered_accountant.model.dto.Admin.AdminResponseDto;
 import com.example.chartered_accountant.model.dto.Auth.AuthRequestDto;
 import com.example.chartered_accountant.model.dto.Auth.AuthResponseDto;
+import com.example.chartered_accountant.model.dto.Auth.RefreshTokenRequestDto;
 import com.example.chartered_accountant.model.dto.user.UserRequestDto;
+import com.example.chartered_accountant.security.CustomUserPrincipal;
 import com.example.chartered_accountant.service.admin.AdminService;
 import com.example.chartered_accountant.service.auth.AuthService;
 import com.example.chartered_accountant.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +49,14 @@ public class AuthController {
     public ResponseEntity<String> adminRegister(@Valid @RequestBody AdminRequestDto adminRequestDto) {
         adminService.save(adminRequestDto);
         return ResponseEntity.ok("New Admin Created Successfully");
+    }
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponseDto> refresh(@Valid @RequestBody RefreshTokenRequestDto requestDto) {
+        return ResponseEntity.ok(authService.refreshSession(requestDto));
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@AuthenticationPrincipal CustomUserPrincipal principal) {
+        authService.logout(principal.getUserId());
+        return ResponseEntity.ok("User Logged Out Successfully. Session invalidated in database.");
     }
 }

@@ -3,6 +3,8 @@ package com.example.chartered_accountant.config;
 import com.example.chartered_accountant.security.CustomUserDetailsService;
 import com.example.chartered_accountant.security.JwtAuthenticationFilter;
 import com.example.chartered_accountant.security.Jwt;
+import com.example.chartered_accountant.util.time.TimingUtilities;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -98,7 +100,20 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").hasRole("USER")
                         .requestMatchers("/appointments/**").hasRole("USER")
                         .anyRequest().denyAll()
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            String jsonResponse = String.format(
+                                    "{\"code\":403,\"message\":\"Forbidden Access\",\"description\":\"You do not possess the required role authorities to execute this route.\",\"timestamp\":\"%s\"}",
+                                    TimingUtilities.currentTimestamp()
+                            );
+
+                            response.getWriter().write(jsonResponse);
+                        })
                 );
+
         return http.build();
     }
 }
