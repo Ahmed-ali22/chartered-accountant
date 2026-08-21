@@ -11,6 +11,7 @@ import com.example.chartered_accountant.security.Jwt;
 import com.example.chartered_accountant.service.refreshtoken.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -35,15 +36,23 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public AuthResponseDto login(AuthRequestDto authRequestDto) {
-        Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(), authRequestDto.getPassword())
-        );
-        CustomUserPrincipal userDetails = (CustomUserPrincipal) auth.getPrincipal();
-        String accessToken = jwt.generateToken(userDetails);
+        try {
+            Authentication auth = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authRequestDto.getEmail(),
+                            authRequestDto.getPassword()
+                    )
+            );
+            CustomUserPrincipal userDetails = (CustomUserPrincipal) auth.getPrincipal();
+            String accessToken = jwt.generateToken(userDetails);
+            RefreshToken refreshToken = refreshTokenService
+                    .createRefreshToken(userDetails.getUserId());
+            return new AuthResponseDto(accessToken, refreshToken.getToken());
 
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
-
-        return new AuthResponseDto(accessToken, refreshToken.getToken());
+        } catch (BadCredentialsException e) {
+            throw new TokenException(401, "Invalid Credentials",
+                    "Email or password is incorrect.");
+        }
     }
 
     @Override

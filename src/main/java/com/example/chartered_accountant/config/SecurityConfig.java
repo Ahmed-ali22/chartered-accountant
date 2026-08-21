@@ -102,6 +102,18 @@ public class SecurityConfig {
                         .anyRequest().denyAll()
                 )
                 .exceptionHandling(exceptions -> exceptions
+
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            String jsonResponse = String.format(
+                                    "{\"code\":401,\"message\":\"Unauthorized\"," +
+                                            "\"description\":\"Authentication is required.\"," +
+                                            "\"timestamp\":\"%s\"}",
+                                    TimingUtilities.currentTimestamp()
+                            );
+                            response.getWriter().write(jsonResponse);
+                        })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType("application/json");
